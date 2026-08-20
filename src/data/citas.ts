@@ -1,5 +1,7 @@
-import {Citas} from "../types/citas"
+import { Citas } from "../types/citas";
 
-export let citas: Citas[] = []
+export let citas: Citas[] = [];
 
-export 
+export function setLista(nuevalista: Citas[]) {
+  citas = nuevalista;
+}

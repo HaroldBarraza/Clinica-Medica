@@ -6,7 +6,7 @@ import {
   CrearCita,
   ActualizarCita,
 } from "../types/citas";
-import { citas } from "../data/citas";
+import { citas, setLista } from "../data/citas";
 
 const router: Router = Router();
 
@@ -40,12 +40,9 @@ router.get("/:id", (req: Request, res: Response) => {
 router.post("/", (req: Request<{}, {}, CrearCita>, res: Response) => {
   const { paciente_id, medico_id, fecha_hora, motivo, estado } = req.body;
   if (!paciente_id || !medico_id || !fecha_hora) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "los campos paciente_id, medico_id y fecha no puede estar vacios",
-      });
+    return res.status(400).json({
+      error: "los campos paciente_id, medico_id y fecha no puede estar vacios",
+    });
   } else {
     const nueva_cita: Citas = {
       id: id_autoincrement++,
@@ -83,5 +80,22 @@ router.put("/:id", (req: Request, res: Response) => {
       motivo: motivo ?? citas[cita_encontrada].motivo,
       estado: estado ?? citas[cita_encontrada].estado,
     };
+    res.json(citas[cita_encontrada]);
+  }
+});
+
+router.delete("/:id", (req: Request, res: Response) => {
+  const id_eliminado = Number(req.params.id);
+  const cita_econtrada = citas.findIndex((id) => {
+    return id.id === id_eliminado;
+  });
+  if (cita_econtrada === -1) {
+    res.status(404).json({ error: "el estudiante no fue encontrado" });
+  } else {
+    let nueva_cita = citas.filter((id) => {
+      return id.id === id_eliminado;
+    });
+    setLista(nueva_cita);
+    res.status(200).json({ mensaje: "se ilmino la cita con exito" });
   }
 });

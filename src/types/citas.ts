@@ -24,10 +24,11 @@ interface CrearCita {
 }
 
 interface ActualizarCita {
+  paciente_id: number;
   medico_id: number;
   fecha_hora: string;
   motivo: string;
   estado: string;
 }
 
-export type { Citas, CitasFiltradas, CrearCita };
+export type { Citas, CitasFiltradas, CrearCita, ActualizarCita };
