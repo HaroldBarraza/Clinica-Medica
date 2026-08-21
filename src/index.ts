@@ -34,20 +34,4 @@ app.listen(PORT, () => {
 
 
 
-//swagger
-const swaggerFilePath = path.resolve('./src/swagger-output.json');
-
-if (fs.existsSync(swaggerFilePath)) {
-    const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf-8'));
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    console.log('Archivo swagger cargado, exitosamente!');
-} else {
-    console.log('Archivo swagger json, no encontrado');
-}
-
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en http://localhost:${PORT}`);
-});
-
-
 
