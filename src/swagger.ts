@@ -1,18 +1,17 @@
-import swaggerAutogen from 'swagger-autogen';
 
+import swaggerAutogen from "swagger-autogen"
 const doc = {
-    info: {
-        title: 'API de gestión Clinica - Medica',
-        description: 'Documento generado automaticamente por swagger-autogen',
-        version: '1.0.0'
+    info:{
+        title: "API de Clinica",
+        description: "Documentacion generada por autogen",
+        version: "1.0.0"
     },
-    host: 'localhost:3000',
-
+    host: "localhost:3000"
 };
-//archivo generado
-const outputFile = "./swagger-output.json";
 
-//archivos que seran leidos por swagger-autogen
+const outputFile = "../swagger-output.json"
+
 const routes = ["./src/index.ts"];
 
-swaggerAutogen()(outputFile, routes, doc);
+swaggerAutogen()(outputFile, routes, doc)
+
