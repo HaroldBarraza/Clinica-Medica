@@ -5,10 +5,10 @@
     "description": "Documentacion generada por autogen",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "c87k99jw-3000.brs.devtunnels.ms",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/api/recetas/": {
