@@ -191,36 +191,85 @@
     },
     "/api/pacientes/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Obtener todos los pacientes",
+        "description": "Obtiene la lista completa de pacientes registrados.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de pacientes obtenida correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "nombre": {
+                    "type": "string",
+                    "example": "Carlos"
+                  },
+                  "apellidos": {
+                    "type": "string",
+                    "example": "Gómez"
+                  },
+                  "edad": {
+                    "type": "number",
+                    "example": 45
+                  },
+                  "telefono": {
+                    "type": "string",
+                    "example": "098765432"
+                  },
+                  "seguroMedico": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Crear un nuevo paciente",
+        "description": "Registra un nuevo paciente en el sistema.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "nombre": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Ana"
                 },
                 "apellidos": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Pérez"
                 },
                 "edad": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 30
                 },
                 "telefono": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "099123456"
                 },
                 "seguroMedico": {
-                  "example": "any"
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -228,79 +277,103 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Paciente creado exitosamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Faltan datos"
           }
         }
       }
     },
     "/api/pacientes/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Obtiene un paciente por su id",
+        "description": "Muestra la información del paciente especificado",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID del paciente"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Registro de paciente encontrado exitosamente"
           },
           "404": {
-            "description": "Not Found"
+            "description": "No existe un paciente con ese id"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Eliminar un registro",
+        "description": "Elimina un registro de paciente por su id.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID del paciente que se desea eliminar"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Registro de paciente eliminado correctamente"
+          },
+          "404": {
+            "description": "No existe un paciente con ese id"
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Modificar registro de paciente",
+        "description": "Modifica los campos de un registro de paciente.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID del paciente que se desea modificar"
           },
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "nombre": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Ana"
                 },
                 "apellidos": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Pérez"
                 },
                 "edad": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 30
                 },
                 "telefono": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "099123456"
                 },
                 "seguroMedico": {
-                  "example": "any"
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -308,10 +381,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Paciente modificado correctamente"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Paciente no encontrado"
           }
         }
       }
@@ -446,6 +519,137 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/medicos/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "especialidad",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "telefono": {
+                  "example": "any"
+                },
+                "nombre": {
+                  "example": "any"
+                },
+                "especialidad": {
+                  "example": "any"
+                },
+                "turno": {
+                  "example": "any"
+                },
+                "activo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/medicos/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "turno": {
+                  "example": "any"
+                },
+                "telefono": {
+                  "example": "any"
+                },
+                "activo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "404": {
             "description": "Not Found"

@@ -11,7 +11,7 @@ import path from "node:path";
 import cors from "cors";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT??3000;
 
 app.use(express.json());
 
@@ -28,7 +28,7 @@ if (fs.existsSync(swaggerFilePath)) {
 app.use("/api/recetas", recetasrouter);
 app.use("/api/pacientes", pacienteRouter);
 app.use("/api/citas", citasRouter)
-app.use('/medicos', medicoRoutes); //Cristian Agrego esto
+app.use('/api/medicos', medicoRoutes);
 
 app.listen(PORT, () => {
   console.log(`el servido esta corriendo en puerto http://localhost:${PORT}`);
