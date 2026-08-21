@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Clinica",
+    "description": "Documentacion generada por autogen",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/recetas/": {
+      "get": {
+        "tags": [
+          "Recetas"
+        ],
+        "summary": "Obeter la lista de recetas",
+        "description": "",
+        "parameters": [
+          {
+            "name": "cita_id",
+            "in": "query",
+            "descriptiion": "filtra por numero de cita",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recetas"
+        ],
+        "summary": "crea una nueva receta",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos para crear una nueva receta",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cita_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "medicamentos": {
+                  "type": "array",
+                  "example": [
+                    "Ibuprofeno",
+                    "Paracetamol"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "indicaciones": {
+                  "type": "string",
+                  "example": "tomar cada 8 horas"
+                },
+                "fecha_emision": {
+                  "type": "string",
+                  "example": "11-07-2026"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/recetas/{id}": {
+      "get": {
+        "tags": [
+          "Recetas"
+        ],
+        "summary": "encutra recetas por el ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Recetas"
+        ],
+        "summary": "actualizar una receta segun el id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de receta que desea actualizar"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos que desea actualizar",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cita_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "medicamentos": {
+                  "type": "array",
+                  "example": [
+                    "Ibuprofeno",
+                    "Naproxeno"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "indicaciones": {
+                  "type": "string",
+                  "example": "cada 3 horas por 5 dias"
+                },
+                "fecha_emision": {
+                  "type": "string",
+                  "example": "21-02-2026"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Recetas"
+        ],
+        "summary": "eliminar una recesta segun el ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la receta que desea eliminar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  }
+}
