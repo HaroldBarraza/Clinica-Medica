@@ -1,5 +1,5 @@
-import swaggerAutogen from "swagger-autogen"
 
+import swaggerAutogen from "swagger-autogen"
 const doc = {
     info:{
         title: "API de Clinica",
@@ -8,7 +8,9 @@ const doc = {
     },
     host: "localhost:3000"
 };
-const outputFile = "./swagger-output.json"
+
+const outputFile = "../swagger-output.json"
+
 const routes = ["./src/index.ts"];
 
 swaggerAutogen()(outputFile, routes, doc)
