@@ -6,12 +6,14 @@ import express from "express";
 import swaggerUi from "swagger-ui-express"
 import fs from "node:fs"
 import path from "node:path";
-
+import cors from "cors";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+app.use(cors());
 const swaggerFilePath = path.resolve("./swagger-output.json");
 if (fs.existsSync(swaggerFilePath)) {
   const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, "utf-8"));
