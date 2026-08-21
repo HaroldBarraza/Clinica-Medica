@@ -1,34 +1,8 @@
-interface Citas {
+export interface Cita {
   id: number;
-  paciente_id: number;
-  medico_id: number;
-  fecha_hora: string;
+  pacienteId: number;
+  medicoId: number;
+  fechaHora: string;
   motivo: string;
-  estado: string;
+  estado: "confirmada" | "cancelada" | "completada";
 }
-
-interface CitasFiltradas {
-  paciente_id: number;
-  medico_id: number;
-  fecha_hora: string;
-  motivo: string;
-  estado: string;
-}
-
-interface CrearCita {
-  paciente_id: number;
-  medico_id: number;
-  fecha_hora: string;
-  motivo: string;
-  estado: string;
-}
-
-interface ActualizarCita {
-  paciente_id: number;
-  medico_id: number;
-  fecha_hora: string;
-  motivo: string;
-  estado: string;
-}
-
-export type { Citas, CitasFiltradas, CrearCita, ActualizarCita };

@@ -1,101 +1,128 @@
 import { Router } from "express";
-import type { Request, Response } from "express";
-import {
-  Citas,
-  CitasFiltradas,
-  CrearCita,
-  ActualizarCita,
-} from "../types/citas";
-import { citas, setLista } from "../data/citas";
+import { citas } from "../data/citas";
 
-const router: Router = Router();
+const router = Router();
 
-let id_autoincrement = 0;
+// Obtener todas las citas
+// También permite filtrar por fecha
+router.get("/", (req, res) => {
+  const { fecha } = req.query;
 
-router.get("/", (req: Request<{}, {}, CitasFiltradas>, res: Response) => {
-  const { fecha_hora } = req.query;
-  let respado_citas = [...citas];
-  if (fecha_hora) {
-    respado_citas = respado_citas.filter((fecha) => {
-      return fecha.fecha_hora === fecha_hora;
+  if (fecha) {
+    const citasFiltradas = citas.filter((cita) =>
+      cita.fechaHora.startsWith(fecha as string),
+    );
+
+    return res.json(citasFiltradas);
+  }
+
+  return res.json(citas);
+});
+
+// Obtener una cita por ID
+router.get("/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const cita = citas.find((cita) => cita.id === id);
+
+  if (!cita) {
+    return res.status(404).json({
+      error: "Cita no encontrada",
     });
   }
-  return res.json({ datos: respado_citas });
+
+  return res.json(cita);
 });
 
-router.get("/:id", (req: Request, res: Response) => {
-  const id_cita = Number(req.params.id);
-  if (!id_cita) {
-    res.status(400).json({ error: "ingrese un Id de cita valido" });
-  }
-  if (id_cita < 0 && id_cita > citas.length) {
-    return res.status(404).json({ error: "el numero de cita no exite" });
-  }
-  const cita_econtrada = citas.find((cita) => {
-    return cita.id === id_cita;
-  });
-  return res.json({ cita_econtrada });
-});
+export default router;
 
-router.post("/", (req: Request<{}, {}, CrearCita>, res: Response) => {
-  const { paciente_id, medico_id, fecha_hora, motivo, estado } = req.body;
-  if (!paciente_id || !medico_id || !fecha_hora) {
+//POST
+
+router.post("/", (req, res) => {
+  const { pacienteId, medicoId, fechaHora, motivo } = req.body;
+
+  if (!pacienteId || !medicoId || !fechaHora || !motivo) {
     return res.status(400).json({
-      error: "los campos paciente_id, medico_id y fecha no puede estar vacios",
+      error: "Todos los campos son obligatorios",
     });
-  } else {
-    const nueva_cita: Citas = {
-      id: id_autoincrement++,
-      paciente_id: paciente_id,
-      medico_id: medico_id,
-      fecha_hora: fecha_hora,
-      motivo: motivo,
-      estado: estado,
-    };
-    citas.push(nueva_cita);
-    res.status(201).json({ estado: "la cita fue creada exitosamente" });
   }
+
+  const nuevaCita = {
+    id: citas.length + 1,
+    pacienteId,
+    medicoId,
+    fechaHora,
+    motivo,
+    estado: "confirmada" as const,
+  };
+
+  citas.push(nuevaCita);
+
+  return res.status(201).json(nuevaCita);
 });
 
-router.put("/:id", (req: Request, res: Response) => {
-  const id_cita = Number(req.query.id);
-  const cita_encontrada = citas.findIndex((id) => {
-    return id.id === id_cita;
-  });
-  if (cita_encontrada === -1) {
-    return res.status(404).json({ error: "la cita que ingreso no existe" });
-  } else {
-    const {
-      paciente_id,
-      medico_id,
-      fecha_hora,
-      motivo,
-      estado,
-    }: ActualizarCita = req.body;
-    citas[cita_encontrada] = {
-      id: id_cita,
-      paciente_id: paciente_id ?? citas[cita_encontrada].paciente_id,
-      medico_id: medico_id ?? citas[cita_encontrada].medico_id,
-      fecha_hora: fecha_hora ?? citas[cita_encontrada].fecha_hora,
-      motivo: motivo ?? citas[cita_encontrada].motivo,
-      estado: estado ?? citas[cita_encontrada].estado,
-    };
-    res.json(citas[cita_encontrada]);
+// PUT
+
+router.put("/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const cita = citas.find((cita) => cita.id === id);
+
+  if (!cita) {
+    return res.status(404).json({
+      error: "Cita no encontrada",
+    });
   }
+
+  const { pacienteId, medicoId, fechaHora, motivo, estado } = req.body;
+
+  if (pacienteId !== undefined) {
+    cita.pacienteId = pacienteId;
+  }
+
+  if (medicoId !== undefined) {
+    cita.medicoId = medicoId;
+  }
+
+  if (fechaHora !== undefined) {
+    cita.fechaHora = fechaHora;
+  }
+
+  if (motivo !== undefined) {
+    cita.motivo = motivo;
+  }
+
+  if (estado !== undefined) {
+    if (
+      estado !== "confirmada" &&
+      estado !== "cancelada" &&
+      estado !== "completada"
+    ) {
+      return res.status(400).json({
+        error: "Estado no válido",
+      });
+    }
+
+    cita.estado = estado;
+  }
+
+  return res.json(cita);
 });
 
-router.delete("/:id", (req: Request, res: Response) => {
-  const id_eliminado = Number(req.params.id);
-  const cita_econtrada = citas.findIndex((id) => {
-    return id.id === id_eliminado;
-  });
-  if (cita_econtrada === -1) {
-    res.status(404).json({ error: "el estudiante no fue encontrado" });
-  } else {
-    let nueva_cita = citas.filter((id) => {
-      return id.id === id_eliminado;
+// DELETE
+
+router.delete("/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const indice = citas.findIndex((cita) => cita.id === id);
+
+  if (indice === -1) {
+    return res.status(404).json({
+      error: "Cita no encontrada",
     });
-    setLista(nueva_cita);
-    res.status(200).json({ mensaje: "se ilmino la cita con exito" });
   }
+
+  citas.splice(indice, 1);
+
+  return res.status(204).send();
 });
