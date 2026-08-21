@@ -8,6 +8,33 @@ const router = Router();
 // get para obtener todos los pacientes
 
 router.get("/", (req: Request, res: Response) =>{
+  /*
+  #swagger.tags = ['Paciente']
+  #swagger.summary = 'Obtener todos los pacientes'
+  #swagger.description = 'Obtiene la lista completa de pacientes registrados.'
+
+  #swagger.responses[200] = {
+    description: 'Lista de pacientes obtenida correctamente',
+    schema: [
+      {
+        id: 1,
+        nombre: 'Ana',
+        apellidos: 'Pérez',
+        edad: 30,
+        telefono: '099123456',
+        seguroMedico: true
+      },
+      {
+        id: 2,
+        nombre: 'Carlos',
+        apellidos: 'Gómez',
+        edad: 45,
+        telefono: '098765432',
+        seguroMedico: false
+      }
+    ]
+  }
+*/
     res.status(200).json(pacientes);
 
 });
@@ -15,6 +42,26 @@ router.get("/", (req: Request, res: Response) =>{
 //get para obtener un paciente por ID
 
 router.get("/:id", (req:Request, res: Response) => {
+   /*
+   
+    #swagger.tags = ['Paciente']
+    #swagger.summary = 'Obtiene un paciente por su id'
+    #swagger.description = 'Muestra la información del paciente especificado'
+    #swagger.parameters['id'] = {
+    in: 'path',
+    description: 'ID del paciente',
+    required: true,
+    type: 'integer'
+    }
+    #swagger.responses[200] = {
+      description: 'Registro de paciente encontrado exitosamente'
+    }
+
+    #swagger.responses[404] = {
+      description: 'No existe un paciente con ese id'
+    }
+
+  */
   const id = Number(req.params.id);
 
   const paciente = pacientes.find((p) => 
@@ -30,10 +77,33 @@ router.get("/:id", (req:Request, res: Response) => {
   res.status(200).json(paciente);
 });
 
-export default router;
-
-//Post
+//Post - crear un nuevo paciente
 router.post("/", (req: Request, res: Response) => {
+    /*
+    #swagger.tags = ['Paciente']
+    #swagger.summary = 'Crear un nuevo paciente'
+    #swagger.description = 'Registra un nuevo paciente en el sistema.'
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      required: true,
+      schema: {
+        nombre: 'Ana',
+        apellidos: 'Pérez',
+        edad: 30,
+        telefono: '099123456',
+        seguroMedico: true
+      }
+    }
+
+    #swagger.responses[201] = {
+      description: 'Paciente creado exitosamente'
+    }
+
+    #swagger.responses[400] = {
+      description: 'Faltan datos'
+    }
+  */
   const { nombre, apellidos, edad, telefono, seguroMedico } = req.body;
 
   if (!nombre || !apellidos || !edad || !telefono) {
@@ -41,10 +111,10 @@ router.post("/", (req: Request, res: Response) => {
       error: "Faltan datos",
     });
   }
-
+  
   const nuevoPaciente: Paciente = {
     id: pacientes.length > 0
-      ? pacientes.length + 1
+      ? Math.max(...pacientes.map((p) => p.id)) + 1
       : 1,
     nombre,
     apellidos,
@@ -57,9 +127,27 @@ router.post("/", (req: Request, res: Response) => {
 
   res.status(201).json(nuevoPaciente);
 });
-// Delete
+// Delete -eliminar un registro de paciente
 
 router.delete("/:id", function (req: Request, res: Response) {
+   /*
+    #swagger.tags = ['Paciente']
+    #swagger.summary = 'Eliminar un registro'
+    #swagger.description = 'Elimina un registro de paciente por su id.'
+    #swagger.parameters['id'] = {
+    in: 'path',
+    description: 'ID del paciente que se desea eliminar',
+    required: true,
+    type: 'integer'
+    }
+    #swagger.responses[200] = {
+      description: 'Registro de paciente eliminado correctamente'
+      }
+
+    #swagger.responses[404] = {
+      description: 'No existe un paciente con ese id'
+    }
+  */
   const idPacienteBuscado = Number(req.params.id);
 
   const index = pacientes.findIndex(function (p) {
@@ -83,10 +171,37 @@ router.delete("/:id", function (req: Request, res: Response) {
 });
 
 
-//put
+//put - modificar paciente
 router.put("/:id", function (req: Request, res: Response) {
   const idBuscado = Number(req.params.id);
-
+   /*
+    #swagger.tags = ['Paciente']
+    #swagger.summary = 'Modificar registro de paciente'
+    #swagger.description = 'Modifica los campos de un registro de paciente.'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID del paciente que se desea modificar',
+      required: true,
+      type: 'integer'
+    }
+    #swagger.parameters['body'] = {
+    in: 'body',
+    required: true,
+    schema: {
+    nombre: 'Ana',
+    apellidos: 'Pérez',
+    edad: 30,
+    telefono: '099123456',
+    seguroMedico: true
+  }
+}
+    #swagger.responses[200] = {
+      description: 'Paciente modificado correctamente'
+    }
+    #swagger.responses[404] = {
+      description: 'Paciente no encontrado'
+    }
+    */
   const index = pacientes.findIndex(function (p) {
     return p.id === idBuscado;
   });
@@ -113,6 +228,8 @@ router.put("/:id", function (req: Request, res: Response) {
       seguroMedico: seguroMedico ?? pacientes[index].seguroMedico,
     };
 
-    res.json(pacientes[index]);
+    res.status(200).json(pacientes[index]);
   }
 });
+
+export default router;

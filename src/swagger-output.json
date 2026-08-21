@@ -1,0 +1,215 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de gestión Clinica - Medica",
+    "description": "Documento generado automaticamente por swagger-autogen",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/pacientes/": {
+      "get": {
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Obtener todos los pacientes",
+        "description": "Obtiene la lista completa de pacientes registrados.",
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes obtenida correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "nombre": {
+                    "type": "string",
+                    "example": "Carlos"
+                  },
+                  "apellidos": {
+                    "type": "string",
+                    "example": "Gómez"
+                  },
+                  "edad": {
+                    "type": "number",
+                    "example": 45
+                  },
+                  "telefono": {
+                    "type": "string",
+                    "example": "098765432"
+                  },
+                  "seguroMedico": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Crear un nuevo paciente",
+        "description": "Registra un nuevo paciente en el sistema.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Ana"
+                },
+                "apellidos": {
+                  "type": "string",
+                  "example": "Pérez"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 30
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "seguroMedico": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Paciente creado exitosamente"
+          },
+          "400": {
+            "description": "Faltan datos"
+          }
+        }
+      }
+    },
+    "/api/pacientes/{id}": {
+      "get": {
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Obtiene un paciente por su id",
+        "description": "Muestra la información del paciente especificado",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del paciente"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registro de paciente encontrado exitosamente"
+          },
+          "404": {
+            "description": "No existe un paciente con ese id"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Eliminar un registro",
+        "description": "Elimina un registro de paciente por su id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del paciente que se desea eliminar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registro de paciente eliminado correctamente"
+          },
+          "404": {
+            "description": "No existe un paciente con ese id"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Paciente"
+        ],
+        "summary": "Modificar registro de paciente",
+        "description": "Modifica los campos de un registro de paciente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del paciente que se desea modificar"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Ana"
+                },
+                "apellidos": {
+                  "type": "string",
+                  "example": "Pérez"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 30
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "seguroMedico": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente modificado correctamente"
+          },
+          "404": {
+            "description": "Paciente no encontrado"
+          }
+        }
+      }
+    }
+  }
+}
