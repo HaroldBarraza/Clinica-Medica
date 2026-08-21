@@ -1,3 +1,4 @@
+
 import recetasrouter from "./routes/recetas.route";
 import pacienteRouter from "./routes/paciente.route";
 import citasRouter from "./routes/citas.route";
@@ -22,12 +23,30 @@ if (fs.existsSync(swaggerFilePath)) {
   console.log("archivo swagger-output.json no encontrado");
 }
 
+
 app.use("/api/recetas", recetasrouter);
 app.use("/api/pacientes", pacienteRouter);
 app.use("/api/citas", citasRouter)
 
 app.listen(PORT, () => {
   console.log(`el servido esta corriendo en puerto http://localhost:${PORT}`);
+});
+
+
+
+//swagger
+const swaggerFilePath = path.resolve('./src/swagger-output.json');
+
+if (fs.existsSync(swaggerFilePath)) {
+    const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf-8'));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    console.log('Archivo swagger cargado, exitosamente!');
+} else {
+    console.log('Archivo swagger json, no encontrado');
+}
+
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en http://localhost:${PORT}`);
 });
 
 
