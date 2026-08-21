@@ -2,6 +2,7 @@
 import recetasrouter from "./routes/recetas.route";
 import pacienteRouter from "./routes/paciente.route";
 import citasRouter from "./routes/citas.route";
+import medicoRoutes from './routes/medico.route'; //Cristian Agrego esto
 
 import express from "express";
 import swaggerUi from "swagger-ui-express"
@@ -27,6 +28,7 @@ if (fs.existsSync(swaggerFilePath)) {
 app.use("/api/recetas", recetasrouter);
 app.use("/api/pacientes", pacienteRouter);
 app.use("/api/citas", citasRouter)
+app.use('/medicos', medicoRoutes); //Cristian Agrego esto
 
 app.listen(PORT, () => {
   console.log(`el servido esta corriendo en puerto http://localhost:${PORT}`);
